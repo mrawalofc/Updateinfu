@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Info - Mr. Awal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Noto+Sans+Bengali:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --secondary: #ec4899;
+            --accent: #f59e0b;
+            --dark: #1e1b4b;
+            --light: #f8fafc;
+            --text-color: #334155;
+            --bg-color: #ffffff;
+            --card-bg: #f1f5f9;
+            --border: #e2e8f0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', 'Noto Sans Bengali', sans-serif;
+            background: var(--bg-color);
+            color: var(--text-color);
+            transition: all 0.3s ease;
+            overflow-x: hidden;
+        }
+
+        /* Star Animation Keyframes */
+        @keyframes starSpin {
+            0% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(180deg) scale(1.2); }
+            100% { transform: rotate(360deg) scale(1); }
+        }
+
+        @keyframes starPulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.3); opacity: 0.8; }
+        }
+
+        @keyframes floatUpDown {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200% center; }
+            100% { background-position: 200% center; }
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+            z-index: 1000;
+            padding: 1rem 0;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo .star-icon {
+            display: inline-block;
+            animation: starSpin 3s linear infinite;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            position: relative;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Star Button Animation */
+        .star-btn {
+            position: relative;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 50px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            overflow: hidden;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .star-btn::before {
+            content: '★';
+            display: inline-block;
+            animation: starPulse 1.5s ease-in-out infinite;
+        }
+
+        .star-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.4);
+        }
+
+        .star-btn.down-btn {
+            background: linear-gradient(135deg, var(--secondary), var(--accent));
+        }
+
+        .star-btn.down-btn::before {
+            animation: floatUpDown 2s ease-in-out infinite;
+        }
+
+        /* Language Toggle */
+        .lang-toggle {
+            display: flex;
+            gap: 0.5rem;
+            background: var(--card-bg);
+            padding: 0.25rem;
+            border-radius: 50px;
+        }
+
+        .lang-btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 50px;
+            background: transparent;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .lang-btn.active {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+        }
+
+        /* Hero Section */
+        .hero {
+            margin-top: 80px;
+            padding: 4rem 2rem;
+            text-align: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: shimmer 20s linear infinite;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            animation: slideIn 0.8s ease-out;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            animation: slideIn 0.8s ease-out 0.2s both;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Color Themes */
+        .color-picker {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .color-option {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 3px solid transparent;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .color-option:hover {
+            transform: scale(1.2);
+        }
+
+        .color-option.active {
+            border-color: var(--dark);
+            box-shadow: 0 0 0 3px var(--bg-color), 0 0 0 6px var(--dark);
+        }
+
+        .color-option[data-theme="blue"] { background: linear-gradient(135deg, #6366f1, #8b5cf6); }
+        .color-option[data-theme="pink"] { background: linear-gradient(135deg, #ec4899, #f43f5e); }
+        .color-option[data-theme="green"] { background: linear-gradient(135deg, #10b981, #34d399); }
+        .color-option[data-theme="orange"] { background: linear-gradient(135deg, #f59e0b, #f97316); }
+        .color-option[data-theme="dark"] { background: linear-gradient(135deg, #1e1b4b, #312e81); }
+
+        /* Cards */
+        .card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            border: 1px solid var(--border);
+            animation: slideIn 0.6s ease-out;
+        }
+
+        .card h2 {
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            background: var(--bg-color);
+            color: var(--text-color);
+            font-family: inherit;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            .nav-links {
+                display: none;
+            }
+            .hero h1 {
+                font-size: 2rem;
+            }
+        }
+
+        /* Info Display */
+        .info-display {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .info-item {
+            background: var(--bg-color);
+            padding: 1.5rem;
+            border-radius: 15px;
+            border-left: 4px solid var(--primary);
+            transition: all 0.3s;
+        }
+
+        .info-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .info-item label {
+            font-size: 0.85rem;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .info-item p {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-color);
+            margin-top: 0.5rem;
+        }
+
+        /* About Section */
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .about-image {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            color: white;
+            margin: 0 auto;
+            box-shadow: 0 10px 40px rgba(99, 102, 241, 0.3);
+        }
+
+        .about-text h3 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 1rem;
+            background: var(--bg-color);
+            border-radius: 12px;
+        }
+
+        .stat-item h4 {
+            font-size: 2rem;
+            color: var(--primary);
+        }
+
+        /* Contact Section */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+        }
+
+        .contact-info-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background: var(--bg-color);
+            border-radius: 12px;
+            transition: all 0.3s;
+        }
+
+        .contact-info-item:hover {
+            transform: translateX(10px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .contact-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 4rem;
+        }
+
+        footer p {
+            opacity: 0.8;
+        }
+
+        .footer-star {
+            display: inline-block;
+            color: var(--accent);
+            animation: starPulse 2s ease-in-out infinite;
+        }
+
+        /* Mobile Menu */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-color);
+        }
+
+        @media (max-width: 768px) {
+            .mobile-menu-btn {
+                display: block;
+            }
+            .about-content,
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Theme: Dark */
+        body.dark-theme {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-color: #e2e8f0;
+            --border: #334155;
+        }
+
+        body.dark-theme .navbar {
+            background: rgba(15, 23, 42, 0.95);
+        }
+
+        /* Success Message */
+        .success-msg {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            background: linear-gradient(135deg, #10b981, #34d399);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.3);
+            transform: translateX(400px);
+            transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            z-index: 2000;
+        }
+
+        .success-msg.show {
+            transform: translateX(0);
+        }
+
+        /* Section Title */
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+        }
+
+        .section-title p {
+            color: #64748b;
+            margin-top: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <span class="star-icon">★</span>
+                <span data-en="Mr. Awal" data-bn="মি. আওয়াল">Mr. Awal</span>
+            </div>
+            
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#home" data-en="Home" data-bn="হোম">Home</a></li>
+                <li><a href="#about" data-en="About" data-bn="সম্পর্কে">About</a></li>
+                <li><a href="#contact" data-en="Contact" data-bn="যোগাযোগ">Contact</a></li>
+            </ul>
+
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <div class="lang-toggle">
+                    <button class="lang-btn active" onclick="setLanguage('en')">EN</button>
+                    <button class="lang-btn" onclick="setLanguage('bn')">BN</button>
+                </div>
+                <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1 data-en="Welcome to My Personal Space" data-bn="আমার ব্যক্তিগত স্থানে স্বাগতম">Welcome to My Personal Space</h1>
+            <p data-en="Manage your information with style and elegance" data-bn="স্টাইল এবং নৈপুণ্যের সাথে আপনার তথ্য পরিচালনা করুন">Manage your information with style and elegance</p>
+            <br>
+            <button class="star-btn down-btn" onclick="scrollToSection('personal-info')" data-en="Get Started ★" data-bn="শুরু করুন ★">
+                Get Started ★
+            </button>
+        </div>
+    </section>
+
+    <!-- Color Picker -->
+    <div class="container">
+        <div class="color-picker">
+            <div class="color-option active" data-theme="blue" onclick="setTheme('blue')" title="Blue Theme"></div>
+            <div class="color-option" data-theme="pink" onclick="setTheme('pink')" title="Pink Theme"></div>
+            <div class="color-option" data-theme="green" onclick="setTheme('green')" title="Green Theme"></div>
+            <div class="color-option" data-theme="orange" onclick="setTheme('orange')" title="Orange Theme"></div>
+            <div class="color-option" data-theme="dark" onclick="setTheme('dark')" title="Dark Theme"></div>
+        </div>
+    </div>
+
+    <!-- Personal Information Section -->
+    <section class="container" id="personal-info">
+        <div class="section-title">
+            <h2 data-en="Personal Information" data-bn="ব্যক্তিগত তথ্য">Personal Information</h2>
+            <p data-en="Add and update your details below" data-bn="নীচে আপনার বিবরণ যোগ এবং আপডেট করুন">Add and update your details below</p>
+        </div>
+
+        <div class="card">
+            <h2><span style="animation: starSpin 3s linear infinite; display: inline-block;">★</span> <span data-en="Add / Update Info" data-bn="তথ্য যোগ / আপডেট করুন">Add / Update Info</span></h2>
+            <form id="infoForm" onsubmit="saveInfo(event)">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label data-en="Full Name" data-bn="পূর্ণ নাম">Full Name</label>
+                        <input type="text" id="fullName" required placeholder="Enter your name">
+                    </div>
+                    <div class="form-group">
+                        <label data-en="Email Address" data-bn="ইমেইল ঠিকানা">Email Address</label>
+                        <input type="email" id="email" required placeholder="your@email.com">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label data-en="Phone Number" data-bn="ফোন নম্বর">Phone Number</label>
+                        <input type="tel" id="phone" placeholder="+880 1XXX-XXXXXX">
+                    </div>
+                    <div class="form-group">
+                        <label data-en="Date of Birth" data-bn="জন্ম তারিখ">Date of Birth</label>
+                        <input type="date" id="dob">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label data-en="Profession" data-bn="পেশা">Profession</label>
+                        <input type="text" id="profession" placeholder="Your profession">
+                    </div>
+                    <div class="form-group">
+                        <label data-en="Location" data-bn="অবস্থান">Location</label>
+                        <input type="text" id="location" placeholder="City, Country">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label data-en="Bio / About You" data-bn="জীবনবৃত্তান্ত / আপনার সম্পর্কে">Bio / About You</label>
+                    <textarea id="bio" rows="3" placeholder="Tell us about yourself..."></textarea>
+                </div>
+
+                <button type="submit" class="star-btn" style="padding: 1rem 2rem; font-size: 1.1rem;">
+                    <span data-en="Save Information" data-bn="তথ্য সংরক্ষণ করুন">Save Information</span>
+                </button>
+            </form>
+        </div>
+
+        <!-- Display Saved Info -->
+        <div class="card" id="savedInfoCard" style="display: none;">
+            <h2><span style="animation: starPulse 2s ease-in-out infinite; display: inline-block;">★</span> <span data-en="Saved Information" data-bn="সংরক্ষিত তথ্য">Saved Information</span></h2>
+            <div class="info-display" id="infoDisplay"></div>
+            <br>
+            <button class="star-btn down-btn" onclick="clearInfo()" style="background: linear-gradient(135deg, #ef4444, #f97316);">
+                <span data-en="Clear All" data-bn="সব মুছে ফেলুন">Clear All</span>
+            </button>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="container" id="about">
+        <div class="section-title">
+            <h2 data-en="About Me" data-bn="আমার সম্পর্কে">About Me</h2>
+            <p data-en="Learn more about Mr. Awal" data-bn="মি. আওয়াল সম্পর্কে আরও জানুন">Learn more about Mr. Awal</p>
+        </div>
+
+        <div class="card">
+            <div class="about-content">
+                <div class="about-image">★</div>
+                <div class="about-text">
+                    <h3 data-en="Mr. Awal" data-bn="মি. আওয়াল">Mr. Awal</h3>
+                    <p data-en="Welcome to my personal website. I am passionate about creating beautiful and functional web experiences. This platform allows you to manage personal information with an elegant interface featuring multiple languages and color themes." 
+                       data-bn="আমার ব্যক্তিগত ওয়েবসাইটে স্বাগতম। আমি সুন্দর এবং কার্যকরী ওয়েব অভিজ্ঞতা তৈরি করতে আগ্রহী। এই প্ল্যাটফর্মটি একাধিক ভাষা এবং রঙের থিম সহ একটি নজরকাড়া ইন্টারফেসে ব্যক্তিগত তথ্য পরিচালনা করতে আপনাকে অনুমতি দেয়।">
+                        Welcome to my personal website. I am passionate about creating beautiful and functional web experiences. This platform allows you to manage personal information with an elegant interface featuring multiple languages and color themes.
+                    </p>
+                    
+                    <div class="stats">
+                        <div class="stat-item">
+                            <h4>2+</h4>
+                            <span data-en="Languages" data-bn="ভাষা">Languages</span>
+                        </div>
+                        <div class="stat-item">
+                            <h4>5</h4>
+                            <span data-en="Color Themes" data-bn="রঙের থিম">Color Themes</span>
+                        </div>
+                        <div class="stat-item">
+                            <h4>★</h4>
+                            <span data-en="Premium" data-bn="প্রিমিয়াম">Premium</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="container" id="contact">
+        <div class="section-title">
+            <h2 data-en="Contact Us" data-bn="যোগাযোগ করুন">Contact Us</h2>
+            <p data-en="Get in touch with Mr. Awal" data-bn="মি. আওয়ালের সাথে যোগাযোগ করুন">Get in touch with Mr. Awal</p>
+        </div>
+
+        <div class="card">
+            <div class="contact-grid">
+                <div>
+                    <h2 style="margin-bottom: 1.5rem;" data-en="Contact Information" data-bn="যোগাযোগের তথ্য">Contact Information</h2>
+                    
+                    <div class="contact-info-item">
+                        <div class="contact-icon">📧</div>
+                        <div>
+                            <label data-en="Email" data-bn="ইমেইল">Email</label>
+                            <p>contact@mrawal.com</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-info-item">
+                        <div class="contact-icon">📱</div>
+                        <div>
+                            <label data-en="Phone" data-bn="ফোন">Phone</label>
+                            <p>+880 1XXX-XXXXXX</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-info-item">
+                        <div class="contact-icon">📍</div>
+                        <div>
+                            <label data-en="Address" data-bn="ঠিকানা">Address</label>
+                            <p data-en="Dhaka, Bangladesh" data-bn="ঢাকা, বাংলাদেশ">Dhaka, Bangladesh</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-info-item">
+                        <div class="contact-icon">🌐</div>
+                        <div>
+                            <label data-en="Website" data-bn="ওয়েবসাইট">Website</label>
+                            <p>www.mrawal.com</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h2 style="margin-bottom: 1.5rem;" data-en="Send Message" data-bn="বার্তা পাঠান">Send Message</h2>
+                    <form onsubmit="sendMessage(event)">
+                        <div class="form-group">
+                            <label data-en="Your Name" data-bn="আপনার নাম">Your Name</label>
+                            <input type="text" required placeholder="John Doe">
+                        </div>
+                        <div class="form-group">
+                            <label data-en="Your Email" data-bn="আপনার ইমেইল">Your Email</label>
+                            <input type="email" required placeholder="john@example.com">
+                        </div>
+                        <div class="form-group">
+                            <label data-en="Message" data-bn="বার্তা">Message</label>
+                            <textarea rows="4" required placeholder="Your message..."></textarea>
+                        </div>
+                        <button type="submit" class="star-btn down-btn" style="width: 100%; justify-content: center;">
+                            <span data-en="Send Message ★" data-bn="বার্তা পাঠান ★">Send Message ★</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p style="font-size: 1.2rem; margin-bottom: 0.5rem;">
+            <span class="footer-star">★</span> 
+            <span data-en="Mr. Awal" data-bn="মি. আওয়াল">Mr. Awal</span> 
+            <span class="footer-star">★</span>
+        </p>
+        <p data-en="© 2026 All Rights Reserved. Designed with" data-bn="© 2026 সর্বস্বত্ব সংরক্ষিত। দিয়ে ডিজাইন করা">© 2026 All Rights Reserved. Designed with</p>
+        <p style="margin-top: 0.5rem; font-size: 0.9rem; opacity: 0.6;" data-en="Premium Star Animation Website" data-bn="প্রিমিয়াম স্টার অ্যানিমেশন ওয়েবসাইট">Premium Star Animation Website</p>
+    </footer>
+
+    <!-- Success Message -->
+    <div class="success-msg" id="successMsg">
+        <span id="successText">Saved successfully!</span>
+    </div>
+
+    <script>
+        // Language Management
+        let currentLang = 'en';
+        
+        const translations = {
+            en: {
+                saved: 'Information saved successfully!',
+                cleared: 'All information cleared!',
+                sent: 'Message sent successfully!'
+            },
+            bn: {
+                saved: 'তথ্য সফলভাবে সংরক্ষিত হয়েছে!',
+                cleared: 'সমস্ত তথ্য মুছে ফেলা হয়েছে!',
+                sent: 'বার্তা সফলভাবে পাঠানো হয়েছে!'
+            }
+        };
+
+        function setLanguage(lang) {
+            currentLang = lang;
+            
+            // Update buttons
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Update all elements with data-en and data-bn
+            document.querySelectorAll('[data-en][data-bn]').forEach(el => {
+                el.textContent = el.getAttribute(`data-${lang}`);
+            });
+            
+            // Update HTML lang attribute
+            document.documentElement.lang = lang === 'bn' ? 'bn' : 'en';
+        }
+
+        // Theme Management
+        const themes = {
+            blue: { primary: '#6366f1', secondary: '#ec4899', accent: '#f59e0b' },
+            pink: { primary: '#ec4899', secondary: '#f43f5e', accent: '#f59e0b' },
+            green: { primary: '#10b981', secondary: '#34d399', accent: '#f59e0b' },
+            orange: { primary: '#f59e0b', secondary: '#f97316', accent: '#ec4899' },
+            dark: { primary: '#818cf8', secondary: '#c084fc', accent: '#fbbf24' }
+        };
+
+        function setTheme(themeName) {
+            const theme = themes[themeName];
+            const root = document.documentElement;
+            
+            root.style.setProperty('--primary', theme.primary);
+            root.style.setProperty('--secondary', theme.secondary);
+            root.style.setProperty('--accent', theme.accent);
+            
+            // Update active state
+            document.querySelectorAll('.color-option').forEach(opt => {
+                opt.classList.remove('active');
+            });
+            document.querySelector(`[data-theme="${themeName}"]`).classList.add('active');
+            
+            // Dark mode
+            if (themeName === 'dark') {
+                document.body.classList.add('dark-theme');
+            } else {
+                document.body.classList.remove('dark-theme');
+            }
+        }
+
+        // Personal Info Management
+        let personalInfo = JSON.parse(localStorage.getItem('personalInfo')) || null;
+
+        function saveInfo(event) {
+            event.preventDefault();
+            
+            personalInfo = {
+                fullName: document.getElementById('fullName').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                dob: document.getElementById('dob').value,
+                profession: document.getElementById('profession').value,
+                location: document.getElementById('location').value,
+                bio: document.getElementById('bio').value
+            };
+            
+            localStorage.setItem('personalInfo', JSON.stringify(personalInfo));
+            displayInfo();
+            showSuccess(translations[currentLang].saved);
+            document.getElementById('infoForm').reset();
+        }
+
+        function displayInfo() {
+            if (!personalInfo) return;
+            
+            const card = document.getElementById('savedInfoCard');
+            const display = document.getElementById('infoDisplay');
+            
+            card.style.display = 'block';
+            
+            const labels = {
+                en: { fullName: 'Full Name', email: 'Email', phone: 'Phone', dob: 'Date of Birth', profession: 'Profession', location: 'Location', bio: 'Bio' },
+                bn: { fullName: 'পূর্ণ নাম', email: 'ইমেইল', phone: 'ফোন', dob: 'জন্ম তারিখ', profession: 'পেশা', location: 'অবস্থান', bio: 'জীবনবৃত্তান্ত' }
+            };
+            
+            const l = labels[currentLang];
+            
+            display.innerHTML = `
+                <div class="info-item"><label>${l.fullName}</label><p>${personalInfo.fullName || '-'}</p></div>
+                <div class="info-item"><label>${l.email}</label><p>${personalInfo.email || '-'}</p></div>
+                <div class="info-item"><label>${l.phone}</label><p>${personalInfo.phone || '-'}</p></div>
+                <div class="info-item"><label>${l.dob}</label><p>${personalInfo.dob || '-'}</p></div>
+                <div class="info-item"><label>${l.profession}</label><p>${personalInfo.profession || '-'}</p></div>
+                <div class="info-item"><label>${l.location}</label><p>${personalInfo.location || '-'}</p></div>
+                <div class="info-item" style="grid-column: 1 / -1;"><label>${l.bio}</label><p>${personalInfo.bio || '-'}</p></div>
+            `;
+        }
+
+        function clearInfo() {
+            personalInfo = null;
+            localStorage.removeItem('personalInfo');
+            document.getElementById('savedInfoCard').style.display = 'none';
+            showSuccess(translations[currentLang].cleared);
+        }
+
+        function sendMessage(event) {
+            event.preventDefault();
+            showSuccess(translations[currentLang].sent);
+            event.target.reset();
+        }
+
+        function showSuccess(text) {
+            const msg = document.getElementById('successMsg');
+            document.getElementById('successText').textContent = text;
+            msg.classList.add('show');
+            setTimeout(() => msg.classList.remove('show'), 3000);
+        }
+
+        function scrollToSection(id) {
+            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function toggleMobileMenu() {
+            const nav = document.getElementById('navLinks');
+            nav.style.display = nav.style.display === 'flex' ? 'none' : 'flex';
+            if (nav.style.display === 'flex') {
+                nav.style.position = 'absolute';
+                nav.style.top = '100%';
+                nav.style.left = '0';
+                nav.style.right = '0';
+                nav.style.flexDirection = 'column';
+                nav.style.background = 'var(--bg-color)';
+                nav.style.padding = '1rem';
+                nav.style.boxShadow = '0 10px 30px rgba(0,0,0,0.1)';
+            }
+        }
+
+        // Load saved info on page load
+        window.onload = function() {
+            if (personalInfo) displayInfo();
+        };
+
+        // Smooth scroll for nav links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) target.scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+    </script>
+</body>
+</html>
